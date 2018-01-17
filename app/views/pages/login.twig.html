@@ -1,0 +1,29 @@
+{% extends 'layout.twig.html' %}
+
+{% block content %}
+<div class="container">
+    <center><h1>Login</h1></center>
+    <form action="{{ path_for('login') }}" method="POST">
+        <div class="form-group">
+            <label for="username">Username :</label>
+            <input type="text" class="form-control" name="username" id="username">
+        </div>
+        <div class="form-group">
+            <label for="Email">Email :</label>
+            <input type="email" class="form-control" name="email" id="Email">
+        </div>
+        <div class="form-group">
+            <label for="psw">Password :</label>
+            <input type="password" class="form-control" name="password" id="psw">
+        </div>
+        <div class="form-group">
+            <label for="pswr">Repeat Password :</label>
+            <input type="password" class="form-control" name="passwordr" id="pswr">
+        </div>
+        <div class="form-group">
+            <center><input type="submit" class="btn btn-primary" name="btn" value="Login"></center>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
