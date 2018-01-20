@@ -1,29 +1,25 @@
 {% extends 'layout.twig.html' %}
 
 {% block content %}
-<div class="container">
-    <center><h1>Login</h1></center>
-    <form action="{{ path_for('login') }}" method="POST">
-        <div class="form-group">
-            <label for="username">Username :</label>
-            <input type="text" class="form-control" name="username" id="username">
-        </div>
-        <div class="form-group">
-            <label for="Email">Email :</label>
-            <input type="email" class="form-control" name="email" id="Email">
-        </div>
-        <div class="form-group">
-            <label for="psw">Password :</label>
-            <input type="password" class="form-control" name="password" id="psw">
-        </div>
-        <div class="form-group">
-            <label for="pswr">Repeat Password :</label>
-            <input type="password" class="form-control" name="passwordr" id="pswr">
-        </div>
-        <div class="form-group">
-            <center><input type="submit" class="btn btn-primary" name="btn" value="Login"></center>
-        </div>
-    </form>
+<div class="login">
+    <div class="container" style="position: relative; top: 15%; color: whitesmoke; z-index: 2;">
+        <center><h1 style="font-family: Gabriola; font-style: italic; font-size: 4vw">Login</h1></center>
+        <form action="{{ path_for('login') }}" method="POST">
+            <div class="form-group">
+                <label for="username" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Username :</label>
+                <input type="text" class="form-control" name="username" id="username">
+            </div>
+            <div class="form-group">
+                <label for="psw" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Password :</label>
+                <input type="password" class="form-control" name="password" id="psw">
+            </div>
+            <div class="form-group" style="position: relative;left: 5%;">
+                <center><input type="submit" class="btn btn-primary" name="btn" value="Login"> <a href="#" style="color: whitesmoke">Forgot password ?</a></center>
+            </div>
+        </form>
+    </div>
+    <img src="img/hearts.png" style="position: relative;left: 3%; z-index: 1;">
 </div>
+
 
 {% endblock %}
