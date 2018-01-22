@@ -199,3 +199,50 @@
     height: 100%;
    /* background-color: black;*/
 }
+
+.profile-box {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    background-color: black;
+    border-radius: 20px;
+    background-image: url(../img/search.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.profile-box img {
+    position: absolute;
+    left: 30px;
+    top: 15px;
+    z-index: 999;
+}
+
+.profile-box-h1{
+    position: absolute;
+    z-index: 4;
+    left: 200px!important;
+}
+
+.profile-box-h2{
+    position: absolute;
+    z-index: 4;
+    top: 40px;
+    left: 200px!important;
+}
+
+.profile-box-h2-pts{
+    position: absolute;
+    z-index: 4;
+    top: 80px;
+    left: 200px!important;
+}
+
+.profile-box {
+    font-size: 1vw;
+}
+
+.like-btn {
+    width: 100%;
+    background-color: #e81239!important;
+}

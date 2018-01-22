@@ -1,5 +1,13 @@
 <?php require 'header.php'; require 'required/functions.php'; iNotConnected(); ?>
 
+<script>
+        $(document).ready(function(){ 
+        	$("#seed_one").autocomplete({source: "action/tags.php"}); 
+        	$("#seed_two").autocomplete({source: "action/tags.php"}); 
+        	$("#seed_three").autocomplete({source: "action/tags.php"}); 
+        });
+</script>
+
 <div class="banner-home">
 	<div class="login">
     	<div class="container" style="position: relative; top: 15%; color: whitesmoke; z-index: 2;">
@@ -7,6 +15,10 @@
 				<div class="form-group">
 		            <label for="name" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Your name :</label>
 		            <input type="text" class="form-control" name="name" value="<?php echo $_SESSION['auth']->name ?>" required>
+		        </div>
+		        <div class="form-group">
+		        	<label for="age" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Age : </label>
+		        	<input type="number" min="18" max="99" name="age" value="<?php echo $_SESSION['auth']->age; ?>" style="color: black!important" required>
 		        </div>
 		        <div class="form-group">
 		        	<label for="gender" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Gender : </label>
@@ -52,11 +64,11 @@
 		        	<input type="textarea" name="bio" class="form-control" maxlength="255" value="<?php echo $_SESSION['auth']->bio ?>">
 		        </div>
 		        <div class="form-group">
-		        	<label style="font-family: Gabriola; font-style: italic; font-size: 2vw">Interest : </label><br>
-		        	<p>
-			        	<input type="text" name="i1" value="<?php echo $_SESSION['auth']->i1; ?>">
-			        	<input type="text" name="i2" value="<?php echo $_SESSION['auth']->i2; ?>">
-			        	<input type="text" name="i3" value="<?php echo $_SESSION['auth']->i3; ?>">
+		        	<label style="font-family: Gabriola; font-style: italic; font-size: 2vw;">Interest : </label><br>
+		        	<p style="color: black!important">
+			        	<input minlength="2" type="text" id="seed_one" name="i1" value="<?php echo $_SESSION['auth']->i1; ?>">
+			        	<input minlength="2" type="text" id="seed_two" name="i2" value="<?php echo $_SESSION['auth']->i2; ?>">
+			        	<input minlength="2" type="text" id="seed_three" name="i3" value="<?php echo $_SESSION['auth']->i3; ?>">
 		        	</p>
 		        </div>
 		        <div class="form-group">

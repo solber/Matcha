@@ -1,5 +1,5 @@
 <?php require 'header.php'; require 'required/functions.php'; iConnected(); ?>
-    <div class="login">
+<div class="login">
     <div class="container" style="position: relative; top: 15%; color: whitesmoke; z-index: 2;">
         <center><h1 style="font-family: Gabriola; font-style: italic; font-size: 4vw">Login</h1></center>
         <form action="action/login_user.php" method="POST">
