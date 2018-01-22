@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Matcha</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -18,54 +21,49 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-inverse " style="z-index: 999; background-color: #1b63d6!important; border: none; border-radius: 0;">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>                        
-          </button>
-          <a class="navbar-brand" href="/index.php">Matcha</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav">
-            <!-- <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Page 1-1</a></li>
-                <li><a href="#">Page 1-2</a></li>
-                <li><a href="#">Page 1-3</a></li>
-              </ul>
-            </li> -->
-            <?php if (isset($_SESSION['auth']->id)) { ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile.php">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/recommanded.php">Recommanded</a>
-                    </li>
-                    <form class="navbar-form navbar-left" action="search.php" method="POST">
-                      <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="search" id="search" style="z-index: 9999">
-                        <div class="input-group-btn">
-                          <button class="btn btn-default" type="submit">
-                            <i class="glyphicon glyphicon-search"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                <?php } ?>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <?php if (!isset($_SESSION['auth']->id)) { ?>
-                <li><a href="/register.php"><span class="glyphicon glyphicon-user"></span> Register</a></li>
-                <li><a href="/login.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+     <nav class="navbar navbar-toggleable-md navbar-light bg-faded" style="z-index: 999; background-color: #2377ff!important;">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/index.php">Matcha</a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <?php if (isset($_SESSION['auth'])) { ?>
+              <li class="nav-item active">
+                <a class="nav-link" href="/profile.php">Profile <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/recommanded.php">Recommanded</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Search by
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="#">Age</a>
+                  <a class="dropdown-item" href="#">Location</a>
+                  <a class="dropdown-item" href="#">Popularity</a>
+                  <a class="dropdown-item" href="#">Interest</a>
+                </div>
+                <li class="nav-item">
+                  <a class="nav-link" href="/action/logout.php">logout</a>
+                </li>
+              </li>
             <?php }else{ ?>
-                <li><a href="/action/logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              <li class="nav-item active">
+                <a class="nav-link" href="/login.php">Login <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register.php">Register</a>
+              </li>
             <?php } ?>
-          </ul>
-        </div>
+        </ul>
+
+        <form class="form-inline my-2 my-lg-0" action="search.php" method="POST">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search" id="search">
+          <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
       </div>
     </nav>
     <!-- <nav class="navbar navbar-expand-sm bg-primary navbar-dark" style="z-index: 999;">

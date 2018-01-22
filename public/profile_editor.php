@@ -10,7 +10,7 @@
 
 <div class="banner-home">
 	<div class="login">
-    	<div class="container" style="position: relative; top: 15%; color: whitesmoke; z-index: 2;">
+    	<div class="container" style="position: relative; top: 10%; color: whitesmoke; z-index: 2;">
 			<form action="action/profile_editor.php" method="POST">
 				<div class="form-group">
 		            <label for="name" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Your name :</label>
@@ -52,10 +52,10 @@
 			            	<input type="radio" name="orientation" value="F">Female
 			            <?php } ?>
 
-			            <?php if ($_SESSION['auth']->orientation === "M/F") { ?>
-			            	<input type="radio" name="orientation" value="M/F" checked>Male/Female
+			            <?php if ($_SESSION['auth']->orientation === "M-F") { ?>
+			            	<input type="radio" name="orientation" value="M-F" checked>Male/Female
 			            <?php }else{ ?>
-			            	<input type="radio" name="orientation" value="M/F">Male/Female
+			            	<input type="radio" name="orientation" value="M-F">Male/Female
 			            <?php } ?>
 			        </p>
 		        </div>

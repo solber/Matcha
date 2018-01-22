@@ -30,6 +30,10 @@
 		if (password_verify($psw, $userExi->password))
 		{
 			$_SESSION['auth'] = $userExi;
+			$json = file_get_contents('http://ip-api.com/json');
+			$obj = json_decode($json);
+			$_SESSION['auth']->location = $obj->regionName;
+			$req = $pdo->query("UPDATE users SET location ='" .addslashes($obj->regionName) ."' WHERE id =" .intval($_SESSION['auth']->id));
 			put_flash('success', "Welcome back !", "../index.php");
 		}
 		else
