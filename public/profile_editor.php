@@ -2,9 +2,9 @@
 
 <script>
         $(document).ready(function(){ 
-        	$("#seed_one").autocomplete({source: "action/tags.php"}); 
-        	$("#seed_two").autocomplete({source: "action/tags.php"}); 
-        	$("#seed_three").autocomplete({source: "action/tags.php"}); 
+        	$("#seed_one").autocomplete({source: "/action/tags.php"}); 
+        	$("#seed_two").autocomplete({source: "/action/tags.php"}); 
+        	$("#seed_three").autocomplete({source: "/action/tags.php"}); 
         });
 </script>
 

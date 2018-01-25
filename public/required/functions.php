@@ -37,4 +37,20 @@
         if (!isset($_SESSION['auth']))
             put_flash('danger', "Error : You cannot access this page.", "../index.php");
     }
+
+    function getDistance($latitude2, $longitude2) {
+        if (session_status() == PHP_SESSION_NONE) { session_start(); }
+        $earth_radius = 6371;
+        $latitude1 = $_SESSION['auth']->lati;
+        $longitude1 = $_SESSION['auth']->longi;
+
+        $dLat = deg2rad($latitude2 - $latitude1);
+        $dLon = deg2rad($longitude2 - $longitude1);
+
+        $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon/2) * sin($dLon/2);
+        $c = 2 * asin(sqrt($a));
+        $d = $earth_radius * $c;
+
+        return $d;
+    }
 ?>

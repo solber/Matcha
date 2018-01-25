@@ -33,7 +33,11 @@
 			$json = file_get_contents('http://ip-api.com/json');
 			$obj = json_decode($json);
 			$_SESSION['auth']->location = $obj->regionName;
-			$req = $pdo->query("UPDATE users SET location ='" .addslashes($obj->regionName) ."' WHERE id =" .intval($_SESSION['auth']->id));
+			$_SESSION['auth']->lati = $obj->lat;
+			$_SESSION['auth']->longi = $obj->lon;
+			$req = $pdo->query("UPDATE users SET location ='" .addslashes($obj->regionName) ."',
+								lati ='".floatval($obj->lat)."',
+								longi ='".floatval($obj->lon)."' WHERE id =" .intval($_SESSION['auth']->id));
 			put_flash('success', "Welcome back !", "../index.php");
 		}
 		else

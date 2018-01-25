@@ -41,14 +41,15 @@
                     Search by
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Age</a>
-                  <a class="dropdown-item" href="#">Location</a>
-                  <a class="dropdown-item" href="#">Popularity</a>
-                  <a class="dropdown-item" href="#">Interest</a>
+                  <a class="dropdown-item" href="/filter_age.php">Age</a>
+                  <a class="dropdown-item" href="/filter_popu.php">Popularity</a>
+                  <a class="dropdown-item" href="/filter_local.php">Location</a>
+                  <a class="dropdown-item" href="/filter_tags.php">Interest</a>
                 </div>
                 <li class="nav-item">
                   <a class="nav-link" href="/action/logout.php">logout</a>
                 </li>
+                <?php include '/notifications.php'; ?>
               </li>
             <?php }else{ ?>
               <li class="nav-item active">
@@ -59,11 +60,12 @@
               </li>
             <?php } ?>
         </ul>
-
+        <?php if (isset($_SESSION['auth'])) { ?>
         <form class="form-inline my-2 my-lg-0" action="search.php" method="POST">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search" id="search">
           <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
         </form>
+        <?php } ?>
       </div>
     </nav>
     <!-- <nav class="navbar navbar-expand-sm bg-primary navbar-dark" style="z-index: 999;">

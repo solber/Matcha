@@ -3,23 +3,19 @@
 <div class="login">
     <div class="container" style="position: relative; top: 15%; height: 80%; color: whitesmoke; z-index: 2; overflow-y: scroll;">
     	<?php
-    	if (!empty($_POST) && isset($_POST['search']))
-    	{
     		require 'required/database.php';
-    		$req = $pdo->query("SELECT name FROM users WHERE name LIKE '%" .addslashes($_POST['search']) ."%'");
+    		$ulati = floatval($_SESSION['auth']->lati);
+    		$ulongi = floatval($_SESSION['auth']->longi);
+    		$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC");
+    		$req->execute([$_SESSION['auth']->orientation]);
 			$res = $req->fetchall();
-
-			foreach ($res as $key) {
-				$req = $pdo->prepare('SELECT * FROM users WHERE name = ?');
-				$req->execute([$key->name]);
-				$currentUser = $req->fetch();
+			foreach ($res as $currentUser) {
 				$number = getDistance($currentUser->lati, $currentUser->longi);
 				$number = number_format($number, 2, ',', ' ');
 				if ($number < 1.00)
 					$local = "In your city";
 				else
 					$local = $number ." km away.";
-
 				?><a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
 		    		<div class="profile-box">
 			    		<h1 class="profile-box-h1"><?php echo $currentUser->name; ?> - <span><?php echo $currentUser->age; ?></span></h1>
@@ -29,9 +25,7 @@
 			    	</div>
 			    	<br>
 		    	</a><?php
-			}
-    	}
-    	?>
+			}?>
     </div>
 </div>
 </div>
