@@ -1,4 +1,4 @@
-<?php if (session_status() == PHP_SESSION_NONE) { session_start(); }  ?>
+<?php if (session_status() == PHP_SESSION_NONE) { session_start(); } date_default_timezone_set( 'Europe/Paris' ); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +19,42 @@
             $("#search").autocomplete({source: "action/search.php"}); 
         });
     </script>
+    <script>
+      $(document).ready(function(){
+
+      // updating the view with notifications using ajax
+      function load_unseen_notification(view = '')
+      {
+        $.ajax({
+            url:"fetch_noti.php",
+            method:"POST",
+            data:{view:view},
+            dataType:"json",
+            success:function(data)
+            {
+              $('.notil').html(data.notification);
+              if(data.unseen_notification > 0)
+              {
+                $('.count').html(data.unseen_notification);
+              }
+            }
+        });
+      }
+
+      load_unseen_notification('yes');
+
+      $(document).on('click', '.noti', function(){
+        $('.count').html(''); 
+        load_unseen_notification('seen'); 
+      });
+      setInterval(function(){
+        $('.count').html('');
+        load_unseen_notification('yes');
+        }, 2000);
+      });
+      </script>
+
+
 </head>
 <body>
      <nav class="navbar navbar-toggleable-md navbar-light bg-faded" style="z-index: 999; background-color: #2377ff!important;">
@@ -33,6 +69,12 @@
               <li class="nav-item active">
                 <a class="nav-link" href="/profile.php">Profile <span class="sr-only">(current)</span></a>
               </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="/chat.php">Chat <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/account.php">Account</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="/recommanded.php">Recommanded</a>
               </li>
@@ -42,14 +84,17 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="/filter_age.php">Age</a>
-                  <a class="dropdown-item" href="/filter_popu.php">Popularity</a>
                   <a class="dropdown-item" href="/filter_local.php">Location</a>
+                  <a class="dropdown-item" href="/filter_popu.php">Popularity</a>
                   <a class="dropdown-item" href="/filter_tags.php">Interest</a>
                 </div>
                 <li class="nav-item">
                   <a class="nav-link" href="/action/logout.php">logout</a>
                 </li>
-                <?php include '/notifications.php'; ?>
+                <li class="nav-item dropdown" style=" position: relative; top: 8px">
+                  <a href="#" class="dropdown-toggle noti" data-toggle="dropdown"><span class="label label-pill label-danger count" style="border-radius:10px; color: red"></span> <i class="fa fa-bell" aria-hidden="true" style="color: black;"></i></a>
+                  <ul class="dropdown-menu notil"></ul>
+                </li>
               </li>
             <?php }else{ ?>
               <li class="nav-item active">
@@ -62,6 +107,12 @@
         </ul>
         <?php if (isset($_SESSION['auth'])) { ?>
         <form class="form-inline my-2 my-lg-0" action="search.php" method="POST">
+          <select class="form-control" id="exampleSelect1" name="selectedfilter">
+            <option value="l">Location</option>
+            <option value="a">Age</option>
+            <option value="p">Popu</option>
+            <option value="i">Interest</option>
+          </select>
           <input class="form-control mr-sm-2" type="text" placeholder="Search" name="search" id="search">
           <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
         </form>

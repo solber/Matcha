@@ -1,5 +1,9 @@
 <?php require 'header.php'; require 'required/functions.php'; iNotConnected(); ?>
 
+<?php
+    if ($_SESSION['auth']->name === "Unknown" || $_SESSION['auth']->age == 0 || $_SESSION['auth']->profile_img === "img/profile.jpg")
+        put_flash('info', "Please set your profile first.", "/index.php");
+?>
 <script>
         $(document).ready(function(){ 
         	$("#seed_one").autocomplete({source: "/action/tags.php"}); 
@@ -22,16 +26,30 @@
     	</center>
     	<?php
     		require 'required/database.php';
-    		if (!empty($_POST))
+    		if ($_SESSION['auth']->orientation === "M" || $_SESSION['auth']->orientation === "F")
     		{
-    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND (i1 = ? OR i1 = ? OR i2 = ? OR i2 = ? OR i3 = ? OR i3 = ?)");
-    			$req->execute([$_SESSION['auth']->orientation, $_POST['i1'], $_POST['i2'], $_POST['i1'], $_POST['i2'], $_POST['i1'], $_POST['i2']]);
-    		}
-    		else
-    		{
-    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ?");
-    			$req->execute([$_SESSION['auth']->orientation]);
-    		}	
+	    		if (!empty($_POST))
+	    		{
+	    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND (i1 = ? OR i1 = ? OR i2 = ? OR i2 = ? OR i3 = ? OR i3 = ?) AND reported = 0");
+	    			$req->execute([$_SESSION['auth']->orientation, $_POST['i1'], $_POST['i2'], $_POST['i1'], $_POST['i2'], $_POST['i1'], $_POST['i2']]);
+	    		}
+	    		else
+	    		{
+	    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND reported = 0");
+	    			$req->execute([$_SESSION['auth']->orientation]);
+	    		}	
+	    	}
+	    	else{
+	    		if (!empty($_POST))
+	    		{
+	    			$req = $pdo->prepare("SELECT * FROM users WHERE (i1 = ? OR i1 = ? OR i2 = ? OR i2 = ? OR i3 = ? OR i3 = ?) AND reported = 0");
+	    			$req->execute([$_POST['i1'], $_POST['i2'], $_POST['i1'], $_POST['i2'], $_POST['i1'], $_POST['i2']]);
+	    		}
+	    		else
+	    		{
+	    			$req = $pdo->query("SELECT * FROM users WHERE reported = 0");
+	    		}		
+	    	}
 			$res = $req->fetchall();
 			foreach ($res as $currentUser) {
 				$number = getDistance($currentUser->lati, $currentUser->longi);
@@ -40,7 +58,12 @@
 					$local = "In your city";
 				else
 					$local = $number ." km away.";
-				?><a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
+				$blocked = 0;
+				if (is_blocked($_SESSION['auth']->id, $currentUser->id))
+                    $blocked = 1;
+				?>
+				<?php if ($_SESSION['auth']->id != $currentUser->id && !$blocked && ($currentUser->orientation === $_SESSION['auth']->gender || $currentUser->orientation === "M-F")){ ?>
+				<a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
 		    		<div class="profile-box">
 			    		<h1 class="profile-box-h1"><?php echo $currentUser->name; ?> - <span><?php echo $currentUser->age; ?></span></h1>
 			    		<h2 class="profile-box-h2"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $local; ?></h2>
@@ -48,7 +71,9 @@
 			    		<img src="<?php echo $currentUser->profile_img; ?>" height="80%">
 			    	</div>
 			    	<br>
-		    	</a><?php
+		    	</a>
+		    	<?php } ?>
+		    	<?php
 			}
     	?>
     </div>

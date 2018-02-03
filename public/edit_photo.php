@@ -62,7 +62,7 @@
 				<?php }else{ ?>
 					<br><br>
 					<center>
-						<img src="<?php echo "img/user/" .$_SESSION['auth']->id ."/profile.jpg"; ?>" width="30%">
+						<img src="<?php echo "img/user/" .$_SESSION['auth']->id ."/profile.jpg"; ?>" width="20%">
 						<br><br>
 						<a href="edit_photo.php"><input type="submit" class="btn btn-primary" value="Change"></a>
 						<a href="profile.php"><input type="submit" class="btn btn-primary" value="Save"></a>

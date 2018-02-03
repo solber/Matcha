@@ -1,5 +1,9 @@
 <?php require 'header.php'; require 'required/functions.php'; iNotConnected(); ?>
 
+<?php
+    if ($_SESSION['auth']->name === "Unknown" || $_SESSION['auth']->age == 0 || $_SESSION['auth']->profile_img === "img/profile.jpg")
+        put_flash('info', "Please set your profile first.", "/index.php");
+?>
 <div class="login">
     <div class="container" style="position: relative; top: 15%; height: 80%; color: whitesmoke; z-index: 2; overflow-y: scroll;">
     	<center>
@@ -14,8 +18,24 @@
     	if (empty($_POST))
     	{
     		require 'required/database.php';
-    		$req = $pdo->prepare("SELECT * FROM users WHERE gender = ?");
-    		$req->execute([$_SESSION['auth']->orientation]);
+    		$ulati = floatval($_SESSION['auth']->lati);
+    		$ulongi = floatval($_SESSION['auth']->longi);
+    		if ($_SESSION['auth']->orientation !== "M" && $_SESSION['auth']->orientation !== "F")
+    		{
+    			$req = $pdo->query("SELECT * FROM users WHERE reported = 0 AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");	
+    		}
+    		else
+    		{
+    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND reported = 0  
+    			AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");
+    			$req->execute([$_SESSION['auth']->orientation]);
+    		}
 			$res = $req->fetchall();
 			foreach ($res as $currentUser) {
 				$number = getDistance($currentUser->lati, $currentUser->longi);
@@ -24,7 +44,11 @@
 					$local = "In your city";
 				else
 					$local = $number ." km away.";
-				?><a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
+				if (is_blocked($_SESSION['auth']->id, $currentUser->id))
+                    $blocked = 1;
+				?>
+				<?php if ($_SESSION['auth']->id != $currentUser->id && !$blocked && ($currentUser->orientation === $_SESSION['auth']->gender || $currentUser->orientation === "M-F")){ ?>
+				<a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
 		    		<div class="profile-box">
 			    		<h1 class="profile-box-h1"><?php echo $currentUser->name; ?> - <span><?php echo $currentUser->age; ?></span></h1>
 			    		<h2 class="profile-box-h2"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $local; ?></h2>
@@ -32,19 +56,72 @@
 			    		<img src="<?php echo $currentUser->profile_img; ?>" height="80%">
 			    	</div>
 			    	<br>
-		    	</a><?php
+		    	</a>
+		    	<?php } ?>
+		    	<?php
 			}
     	}
     	else
     	{
     		require 'required/database.php';
-    		if ($_POST['btnpopu'] === "0-100")
-    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND popscore >= 0 AND popscore <= 100");
-    		else if ($_POST['btnpopu'] === "100-200")
-    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND popscore >= 100 AND popscore <= 200");
-    		else if ($_POST['btnpopu'] === "200+")
-    			$req = $pdo->prepare("SELECT * FROM users WHERE gender = ? AND popscore >= 200");
-    		$req->execute([$_SESSION['auth']->orientation]);
+
+    		$ulati = floatval($_SESSION['auth']->lati);
+    		$ulongi = floatval($_SESSION['auth']->longi);
+
+    		if ($_POST['btnpopu'] === "0-100") {
+	    		if ($_SESSION['auth']->orientation !== "M" && $_SESSION['auth']->orientation !== "F")
+	    		{
+	    			$req = $pdo->query("SELECT * FROM users WHERE popscore >= 0 AND popscore <= 100 AND reported = 0 AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+	    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");	
+	    		}
+	    		else
+	    		{
+	    			$req = $pdo->prepare("SELECT * FROM users WHERE popscore >= 0 AND popscore <= 100 AND gender = ? AND reported = 0  
+	    			AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+	    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");
+	    			$req->execute([$_SESSION['auth']->orientation]);
+	    		}
+	    	}
+	    	else if ($_POST['btnpopu'] === "100-200") {
+	    		if ($_SESSION['auth']->orientation !== "M" && $_SESSION['auth']->orientation !== "F")
+	    		{
+	    			$req = $pdo->query("SELECT * FROM users WHERE popscore >= 100 AND popscore <= 200 AND reported = 0 AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+	    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");	
+	    		}
+	    		else
+	    		{
+	    			$req = $pdo->prepare("SELECT * FROM users WHERE popscore >= 100 AND popscore <= 200 AND gender = ? AND reported = 0  
+	    			AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+	    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");
+	    			$req->execute([$_SESSION['auth']->orientation]);
+	    		}
+	    	}
+	    	else if ($_POST['btnpopu'] === "200+") {
+	    		if ($_SESSION['auth']->orientation !== "M" && $_SESSION['auth']->orientation !== "F")
+	    		{
+	    			$req = $pdo->query("SELECT * FROM users WHERE popscore >= 200 AND reported = 0 AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+	    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");	
+	    		}
+	    		else
+	    		{
+	    			$req = $pdo->prepare("SELECT * FROM users WHERE popscore >= 200 AND gender = ? AND reported = 0  
+	    			AND (i1 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i1 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i2 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i2 LIKE '%" .$_SESSION['auth']->i3 ."%' 
+	    			OR i3 LIKE '%" .$_SESSION['auth']->i1 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i2 ."%' OR i3 LIKE '%" .$_SESSION['auth']->i3 ."%')
+	    			ORDER BY ((lati-$ulati)*(lati-$ulati)) + ((longi - $ulongi)*(longi - $ulongi)) ASC, popscore DESC");
+	    			$req->execute([$_SESSION['auth']->orientation]);
+	    		}
+	    	}
 			$res = $req->fetchall();
 			foreach ($res as $currentUser) {
 				$number = getDistance($currentUser->lati, $currentUser->longi);
@@ -54,7 +131,12 @@
 					$local = "In your city";
 				else
 					$local = $number ." km away.";
-				?><a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
+				$blocked = 0;
+				if (is_blocked($_SESSION['auth']->id, $currentUser->id))
+                    $blocked = 1;
+				?>
+				<?php if ($_SESSION['auth']->id != $currentUser->id && !$blocked && ($currentUser->orientation === $_SESSION['auth']->gender || $currentUser->orientation === "M-F")){ ?>
+				<a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
 		    		<div class="profile-box">
 			    		<h1 class="profile-box-h1"><?php echo $currentUser->name; ?> - <span><?php echo $currentUser->age; ?></span></h1>
 			    		<h2 class="profile-box-h2"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $local; ?></h2>
@@ -62,7 +144,9 @@
 			    		<img src="<?php echo $currentUser->profile_img; ?>" height="80%">
 			    	</div>
 			    	<br>
-		    	</a><?php
+		    	</a>
+		    	<?php } ?>
+		    	<?php
 			}
     	}
     	?>

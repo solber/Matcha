@@ -2,9 +2,9 @@
 
 <script>
         $(document).ready(function(){ 
-        	$("#seed_one").autocomplete({source: "/action/tags.php"}); 
-        	$("#seed_two").autocomplete({source: "/action/tags.php"}); 
-        	$("#seed_three").autocomplete({source: "/action/tags.php"}); 
+        	$("#seed_one").autocomplete({source: "action/tags.php"}); 
+        	$("#seed_two").autocomplete({source: "action/tags.php"}); 
+        	$("#seed_three").autocomplete({source: "action/tags.php"}); 
         });
 </script>
 
@@ -13,16 +13,16 @@
     	<div class="container" style="position: relative; top: 10%; color: whitesmoke; z-index: 2;">
 			<form action="action/profile_editor.php" method="POST">
 				<div class="form-group">
-		            <label for="name" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Your name :</label>
+		            <label for="name">Your name :</label>
 		            <input type="text" class="form-control" name="name" value="<?php echo $_SESSION['auth']->name ?>" required>
 		        </div>
 		        <div class="form-group">
-		        	<label for="age" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Age : </label>
+		        	<label for="age">Age : </label>
 		        	<input type="number" min="18" max="99" name="age" value="<?php echo $_SESSION['auth']->age; ?>" style="color: black!important" required>
 		        </div>
 		        <div class="form-group">
-		        	<label for="gender" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Gender : </label>
-		        	<p style="font-size: 2vw">
+		        	<label for="gender">Gender : </label>
+		        	<p>
 
 		      		<?php if ($_SESSION['auth']->gender === "M") { ?>
 		        		<input type="radio" name="gender" value="M" checked>Male
@@ -38,8 +38,8 @@
 		        	</p>
 		        </div>
 		        <div class="form-group">
-		            <label for="orientation" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Your orientation :</label>
-		            <p style="font-size: 2vw">
+		            <label for="orientation">Your orientation :</label>
+		            <p>
 		            	<?php if ($_SESSION['auth']->orientation === "M") { ?>
 			            	<input type="radio" name="orientation" value="M" checked>Male
 			            <?php }else{ ?>
@@ -60,11 +60,11 @@
 			        </p>
 		        </div>
 		        <div class="form-group">
-		        	<label for="bio" style="font-family: Gabriola; font-style: italic; font-size: 2vw">Your bio :</label>
+		        	<label for="bio">Your bio :</label>
 		        	<input type="textarea" name="bio" class="form-control" maxlength="255" value="<?php echo $_SESSION['auth']->bio ?>">
 		        </div>
 		        <div class="form-group">
-		        	<label style="font-family: Gabriola; font-style: italic; font-size: 2vw;">Interest : </label><br>
+		        	<label>Interest : </label><br>
 		        	<p style="color: black!important">
 			        	<input minlength="2" type="text" id="seed_one" name="i1" value="<?php echo $_SESSION['auth']->i1; ?>">
 			        	<input minlength="2" type="text" id="seed_two" name="i2" value="<?php echo $_SESSION['auth']->i2; ?>">

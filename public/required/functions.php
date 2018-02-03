@@ -9,8 +9,25 @@
     {
         if (session_status() == PHP_SESSION_NONE) { session_start(); }
         $_SESSION['flash'][$alert] = $message;
-        header('Location: ' .$path);
+        echo '<script language="Javascript">
+                 document.location.replace("'.$path .'");
+            </script>';
         exit();
+    }
+
+    function getDistance($latitude2, $longitude2) {
+        $earth_radius = 6371;
+
+        $latitude1 = $_SESSION['auth']->lati;
+        $longitude1 = $_SESSION['auth']->longi;
+        $dLat = deg2rad($latitude2 - $latitude1);
+        $dLon = deg2rad($longitude2 - $longitude1);
+
+        $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon/2) * sin($dLon/2);
+        $c = 2 * asin(sqrt($a));
+        $d = $earth_radius * $c;
+
+        return $d;
     }
 
     function send_mail($to, $subject, $message)
@@ -38,19 +55,18 @@
             put_flash('danger', "Error : You cannot access this page.", "../index.php");
     }
 
-    function getDistance($latitude2, $longitude2) {
+    function is_blocked($blocker, $blocked){
         if (session_status() == PHP_SESSION_NONE) { session_start(); }
-        $earth_radius = 6371;
-        $latitude1 = $_SESSION['auth']->lati;
-        $longitude1 = $_SESSION['auth']->longi;
 
-        $dLat = deg2rad($latitude2 - $latitude1);
-        $dLon = deg2rad($longitude2 - $longitude1);
+        require "database.php";
 
-        $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * sin($dLon/2) * sin($dLon/2);
-        $c = 2 * asin(sqrt($a));
-        $d = $earth_radius * $c;
+        $req = $pdo->prepare("SELECT * FROM blocked WHERE blocker = ? AND blocked = ?");
+        $req->execute([$blocker, $blocked]);
 
-        return $d;
+        $res = $req->fetch();
+
+        if ($res)
+            return (true);
+        return (false);
     }
 ?>

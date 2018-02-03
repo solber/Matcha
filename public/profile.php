@@ -1,10 +1,10 @@
 <?php require 'header.php'; require 'required/functions.php'; iNotConnected(); ?>
 
-<div class="banner-home">
+<div class="banner-home"><br><br><br>
+    <center><a href="profile_editor.php"><input class="btn btn-primary" type="submit" name="Edit" value="Edit Profile"></a>
+                <a href="edit_photo.php"><input class="btn btn-primary" type="submit" name="EditPhoto" value="Edit Photo"></a></center>
     <div class="left-container">
         <div class="MainPhoto">
-            <center><a href="profile_editor.php"><input class="btn btn-primary" type="submit" name="Edit" value="Edit Profile"></a>
-                <a href="edit_photo.php"><input class="btn btn-primary" type="submit" name="EditPhoto" value="Edit Photo"></a></center>
             <img src="<?php echo $_SESSION['auth']->profile_img; ?>" width="100%" title="profile_img" alt="profile_img">
         </div>
     </div>

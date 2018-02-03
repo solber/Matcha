@@ -1,10 +1,13 @@
 <?php 
 	require '../required/database.php';
-	$req = $pdo->query("SELECT name FROM users WHERE name LIKE '%" .addslashes($_GET['term']) ."%'");
-	$res = $req->fetchall();
+	if (isset($_GET['term']))
+	{
+		$req = $pdo->query("SELECT name FROM users WHERE reported = 0 AND name LIKE '%" .addslashes($_GET['term']) ."%' LIMIT 10");
+		$res = $req->fetchall();
 
-	foreach ($res as $key) {
-		$tab[] = $key->name;
+		foreach ($res as $key) {
+			$tab[] = $key->name;
+		}
+		print json_encode($tab);
 	}
-	print json_encode($tab);
 ?>
