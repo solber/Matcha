@@ -76,7 +76,7 @@
                 <a class="nav-link" href="/account.php">Account</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/recommanded.php">Recommanded</a>
+                <a class="nav-link" href="/recommanded.php">Recommended</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -10,7 +10,7 @@
 
 	if ($_POST['id'] !== 0)
 	{
-		$req = $pdo->prepare("SELECT * FROM messages WHERE sender = ? AND receiver = ? OR receiver = ? AND sender = ?");
+		$req = $pdo->prepare("SELECT * FROM messages WHERE sender = ? AND receiver = ? OR receiver = ? AND sender = ? ORDER BY id DESC");
 		$req->execute([$_SESSION['auth']->id, $_POST['id'], $_SESSION['auth']->id, $_POST['id']]);
 		$res = $req->fetchall();
 

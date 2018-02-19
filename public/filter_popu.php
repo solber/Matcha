@@ -44,6 +44,7 @@
 					$local = "In your city";
 				else
 					$local = $number ." km away.";
+				$blocked = 0;
 				if (is_blocked($_SESSION['auth']->id, $currentUser->id))
                     $blocked = 1;
 				?>

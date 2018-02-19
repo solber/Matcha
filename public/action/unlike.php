@@ -11,13 +11,5 @@ if (session_status() == PHP_SESSION_NONE) { session_start(); }
 	$req = $pdo->prepare("DELETE FROM likes WHERE emitter = ? AND receiver = ?");
 	$req->execute([$_SESSION['auth']->id, $_POST['like']]);
 
-	$req = $pdo->prepare("SELECT * FROM matches WHERE A = ? AND B = ?");
-	$req->execute([$_SESSION['auth']->id, $_POST['like']]);
-
-	$entry = $req->fetch();
-
-	if($entry)
-	{
-		$req = $pdo->prepare("DELETE FROM matches WHERE A = ? AND B = ? OR B = ? AND A = ?");
-		$req->execute([$_SESSION['auth']->id, $_POST['like'], $_SESSION['auth']->id, $_POST['like']]);
-	}
+	$req = $pdo->prepare("DELETE FROM matches WHERE A = ? AND B = ? OR B = ? AND A = ?");
+	$req->execute([$_SESSION['auth']->id, $_POST['like'], $_SESSION['auth']->id, $_POST['like']]);

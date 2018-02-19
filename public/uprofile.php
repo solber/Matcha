@@ -112,8 +112,10 @@
                 <?php } ?>
             <img src="<?php echo $userinfo->profile_img; ?>" width="100%" title="profile_img" alt="profile_img">
             <center>
-            <button id="blockbtn" class="btn btn-primary block-btn" type="submit" name="blockbtn" value="<?php echo $userinfo->id; ?>">BLOCK</button>
-            <button id="reportbtn" class="btn btn-primary report-btn" type="submit" name="reportbtn" value="<?php echo $userinfo->id; ?>">REPORT</button></center>
+            <?php if ($userinfo->id != $_SESSION['auth']->id) { ?>
+                <button id="blockbtn" class="btn btn-primary block-btn" type="submit" name="blockbtn" value="<?php echo $userinfo->id; ?>">BLOCK</button>
+                <button id="reportbtn" class="btn btn-primary report-btn" type="submit" name="reportbtn" value="<?php echo $userinfo->id; ?>">REPORT</button></center>
+            <?php } ?>
             <?php if ($elapsed > 15){ ?>
                 <small><em>Last online : <?php echo $userinfo->lastonline; ?></em></small>
 

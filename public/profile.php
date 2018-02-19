@@ -1,8 +1,8 @@
 <?php require 'header.php'; require 'required/functions.php'; iNotConnected(); ?>
 
 <div class="banner-home"><br><br><br>
-    <center><a href="profile_editor.php"><input class="btn btn-primary" type="submit" name="Edit" value="Edit Profile"></a>
-                <a href="edit_photo.php"><input class="btn btn-primary" type="submit" name="EditPhoto" value="Edit Photo"></a></center>
+    <center><a href="profile_editor.php"><input class="btn btn-primary" type="submit" name="Edit" value="Edit Profile" style="position: absolute; z-index: 9999999999999; left: 0"></a>
+                <a href="edit_photo.php"><input class="btn btn-primary" type="submit" name="EditPhoto" value="Edit Photo" style="position: absolute; z-index: 9999999999999; left: 110px"></a></center>
     <div class="left-container">
         <div class="MainPhoto">
             <img src="<?php echo $_SESSION['auth']->profile_img; ?>" width="100%" title="profile_img" alt="profile_img">
