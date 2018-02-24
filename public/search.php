@@ -84,7 +84,7 @@
                     $blocked = 1;
 				?>
 				<?php if (!$blocked) { ?>
-				<a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke;">
+				<a href="uprofile?id=<?php echo $currentUser->id; ?>"  style="color: whitesmoke">
 		    		<div class="profile-box">
 			    		<h1 class="profile-box-h1"><?php echo $currentUser->name; ?> - <span><?php echo $currentUser->age; ?></span></h1>
 			    		<h2 class="profile-box-h2"><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo $local; ?></h2>
